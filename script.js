@@ -60,13 +60,11 @@ function playRound(computerChoice, humanChoice) {
 }
 
 function playGame() {
-  while (humanScore != 5 && computerScore != 5) {
     playRound(getComputerChoice(), getHumanChoice());
     console.log("Score:");
     console.log(`Human: ${humanScore}`);
     console.log(`Computer: ${computerScore}`);
     console.log("-------------------------------------------");
-  }
 
   if (humanScore === 5) {
     console.log("You're a winner!");
