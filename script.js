@@ -35,45 +35,45 @@ scissorsButton.addEventListener("click", (event) => {
   playRound(getComputerChoice(), event.target.textContent);
 });
 
-let humanScore = 0;
+let playerScore = 0;
 let computerScore = 0;
 
-function playRound(computerSelection, humanSelection) {
-  playerSelectionDisplay.textContent = `Player: ${humanSelection}`;
+function playRound(playerSelection, computerSelection) {
+  playerSelectionDisplay.textContent = `Player: ${playerSelection}`;
   computerSelectionDisplay.textContent = `CPU: ${computerSelection}`;
 
-  function result(isHumanWinner) {
-    if (isHumanWinner) {
-      messageDisplay.textContent = `You've won! ${humanSelection} beats ${computerSelection}.`;
-      playerScoreDisplay.textContent = ++humanScore;
+  function result(isPlayerWinner) {
+    if (isPlayerWinner) {
+      messageDisplay.textContent = `You've won! ${playerSelection} beats ${computerSelection}.`;
+      playerScoreDisplay.textContent = ++playerScore;
     } else {
-      messageDisplay.textContent = `You've lost! ${computerSelection} beats ${humanSelection}.`;
+      messageDisplay.textContent = `You've lost! ${computerSelection} beats ${playerSelection}.`;
       computerScoreDisplay.textContent = ++computerScore;
     }
   }
 
   function resetScore() {
-    humanScore = 0;
+    playerScore = 0;
     computerScore = 0;
-    playerScoreDisplay.textContent = humanScore;
+    playerScoreDisplay.textContent = playerScore;
     computerScoreDisplay.textContent = computerScore;
   }
 
-  if (humanSelection === computerSelection) {
+  if (playerSelection === computerSelection) {
     messageDisplay.textContent = "Draw!";
-  } else if (humanSelection === "Rock") {
+  } else if (playerSelection === "Rock") {
     if (computerSelection === "Scissors") {
       result(true);
     } else {
       result(false);
     }
-  } else if (humanSelection === "Paper") {
+  } else if (playerSelection === "Paper") {
     if (computerSelection === "Rock") {
       result(true);
     } else {
       result(false);
     }
-  } else if (humanSelection === "Scissors") {
+  } else if (playerSelection === "Scissors") {
     if (computerSelection === "Paper") {
       result(true);
     } else {
@@ -81,7 +81,7 @@ function playRound(computerSelection, humanSelection) {
     }
   }
 
-  if (humanScore === 5) {
+  if (playerScore === 5) {
     messageDisplay.textContent = "You're a winner!";
     resetScore();
   } else if (computerScore === 5) {
