@@ -1,11 +1,14 @@
+const options = ["Rock", "Paper", "Scissors"];
+
+const beats = {
+  Rock: "Scissors",
+  Paper: "Rock",
+  Scissors: "Paper",
+};
+
 function getComputerChoice() {
-  const options = ["Rock", "Paper", "Scissors"];
   return options[Math.floor(Math.random() * 3)];
 }
-
-const rockButton = document.querySelector("#rock-button");
-const paperButton = document.querySelector("#paper-button");
-const scissorsButton = document.querySelector("#scissors-button");
 
 const playerSelectionDisplay = document.querySelector("#player-selection");
 const computerSelectionDisplay = document.querySelector("#computer-selection");
@@ -13,52 +16,66 @@ const playerScoreDisplay = document.querySelector("#player-score");
 const computerScoreDisplay = document.querySelector("#computer-score");
 const messageDisplay = document.querySelector("#message");
 
-rockButton.addEventListener("click", (event) => {
-  playRound(event.target.textContent, getComputerChoice());
+const rpsButtons = document.querySelectorAll(
+  "#rock-button, #paper-button, #scissors-button",
+);
+
+rpsButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    playRound(event.target.textContent, getComputerChoice());
+  });
 });
-paperButton.addEventListener("click", (event) => {
-  playRound(event.target.textContent, getComputerChoice());
-});
-scissorsButton.addEventListener("click", (event) => {
-  playRound(event.target.textContent, getComputerChoice());
-});
+
+function getRoundResult(playerChoice, computerChoice) {
+  if (playerChoice === computerChoice) return "draw";
+
+  return beats[playerChoice] === computerChoice ? "win" : "lose";
+}
+
+function playRound(playerSelection, computerSelection) {
+  const outcome = getRoundResult(playerSelection, computerSelection);
+
+  updateUI(playerSelection, computerSelection, outcome);
+  updateScore(outcome);
+}
+
+function updateUI(playerChoice, computerChoice, outcome) {
+  playerSelectionDisplay.textContent = `Player: ${playerChoice}`;
+  computerSelectionDisplay.textContent = `CPU: ${computerChoice}`;
+
+  messageDisplay.textContent = getMessage(
+    playerChoice,
+    computerChoice,
+    outcome,
+  );
+}
+
+function getMessage(playerChoice, computerChoice, outcome) {
+  if (outcome === "win") {
+    return `You've won! ${playerChoice} beats ${computerChoice}.`;
+  } else if (outcome === "lose") {
+    return `You've lost! ${computerChoice} beats ${playerChoice}.`;
+  } else {
+    return "Draw!";
+  }
+}
 
 let playerScore = 0;
 let computerScore = 0;
 
-function playRound(playerSelection, computerSelection) {
-  playerSelectionDisplay.textContent = `Player: ${playerSelection}`;
-  computerSelectionDisplay.textContent = `CPU: ${computerSelection}`;
-
-  function isPlayerWinner(result) {
-    if (result) {
-      messageDisplay.textContent = `You've won! ${playerSelection} beats ${computerSelection}.`;
-      playerScoreDisplay.textContent = ++playerScore;
-    } else {
-      messageDisplay.textContent = `You've lost! ${computerSelection} beats ${playerSelection}.`;
-      computerScoreDisplay.textContent = ++computerScore;
-    }
-  }
-
-  function resetScore() {
-    playerScore = 0;
-    computerScore = 0;
+function updateScore(result) {
+  if (result === "win") {
+    playerScore++;
     playerScoreDisplay.textContent = playerScore;
+  } else if (result === "lose") {
+    computerScore++;
     computerScoreDisplay.textContent = computerScore;
   }
 
-  const beats = {
-    Rock: "Scissors",
-    Paper: "Rock",
-    Scissors: "Paper",
-  };
+  checkGameEnd();
+}
 
-  if (playerSelection === computerSelection) {
-    messageDisplay.textContent = "Draw!";
-  } else {
-    isPlayerWinner(beats[playerSelection] === computerSelection);
-  }
-
+function checkGameEnd() {
   if (playerScore === 5) {
     messageDisplay.textContent = "You're a winner!";
     resetScore();
@@ -66,4 +83,11 @@ function playRound(playerSelection, computerSelection) {
     messageDisplay.textContent = "You're a loser!";
     resetScore();
   }
+}
+
+function resetScore() {
+  playerScore = 0;
+  computerScore = 0;
+  playerScoreDisplay.textContent = playerScore;
+  computerScoreDisplay.textContent = computerScore;
 }
