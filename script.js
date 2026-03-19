@@ -15,6 +15,20 @@ function getHumanChoice() {
   return prompt("Choose Rock, Paper or Scissors:");
 }
 
+const rockButton = document.querySelector('#rock-button');
+const paperButton = document.querySelector('#paper-button');
+const scissorsButton = document.querySelector('#scissors-button');
+
+rockButton.addEventListener('click', (event) => {
+  playRound(getComputerChoice(), event.target.innerHTML);
+});
+paperButton.addEventListener('click', (event) => {
+  playRound(getComputerChoice(), event.target.innerHTML);
+});
+scissorsButton.addEventListener('click', (event) => {
+  playRound(getComputerChoice(), event.target.innerHTML);
+});
+
 let humanScore = 0;
 let computerScore = 0;
 
