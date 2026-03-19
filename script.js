@@ -42,8 +42,8 @@ function playRound(playerSelection, computerSelection) {
   playerSelectionDisplay.textContent = `Player: ${playerSelection}`;
   computerSelectionDisplay.textContent = `CPU: ${computerSelection}`;
 
-  function result(isPlayerWinner) {
-    if (isPlayerWinner) {
+  function isPlayerWinner(result) {
+    if (result) {
       messageDisplay.textContent = `You've won! ${playerSelection} beats ${computerSelection}.`;
       playerScoreDisplay.textContent = ++playerScore;
     } else {
@@ -62,23 +62,11 @@ function playRound(playerSelection, computerSelection) {
   if (playerSelection === computerSelection) {
     messageDisplay.textContent = "Draw!";
   } else if (playerSelection === "Rock") {
-    if (computerSelection === "Scissors") {
-      result(true);
-    } else {
-      result(false);
-    }
+    isPlayerWinner(computerSelection === "Scissors");
   } else if (playerSelection === "Paper") {
-    if (computerSelection === "Rock") {
-      result(true);
-    } else {
-      result(false);
-    }
+    isPlayerWinner(computerSelection === "Rock");
   } else if (playerSelection === "Scissors") {
-    if (computerSelection === "Paper") {
-      result(true);
-    } else {
-      result(false);
-    }
+    isPlayerWinner(computerSelection === "Paper");
   }
 
   if (playerScore === 5) {
