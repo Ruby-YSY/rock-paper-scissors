@@ -52,6 +52,13 @@ function playRound(computerSelection, humanSelection) {
     }
   }
 
+  function resetScore() {
+    humanScore = 0;
+    computerScore = 0;
+    playerScoreDisplay.textContent = humanScore;
+    computerScoreDisplay.textContent = computerScore;
+  }
+
   if (humanSelection === computerSelection) {
     messageDisplay.textContent = "Draw!";
   } else if (humanSelection === "Rock") {
@@ -72,5 +79,13 @@ function playRound(computerSelection, humanSelection) {
     } else {
       result(false);
     }
+  }
+
+  if (humanScore === 5) {
+    messageDisplay.textContent = "You're a winner!";
+    resetScore();
+  } else if (computerScore === 5) {
+    messageDisplay.textContent = "You're a loser!";
+    resetScore();
   }
 }
