@@ -1,14 +1,6 @@
 function getComputerChoice() {
-  switch (Math.floor(Math.random() * 3)) {
-    case 0:
-      return "Rock";
-
-    case 1:
-      return "Paper";
-
-    case 2:
-      return "Scissors";
-  }
+  const options = ["Rock", "Paper", "Scissors"];
+  return options[Math.floor(Math.random() * 3)];
 }
 
 const rockButton = document.querySelector("#rock-button");
@@ -22,13 +14,13 @@ const computerScoreDisplay = document.querySelector("#computer-score");
 const messageDisplay = document.querySelector("#message");
 
 rockButton.addEventListener("click", (event) => {
-  playRound(getComputerChoice(), event.target.textContent);
+  playRound(event.target.textContent, getComputerChoice());
 });
 paperButton.addEventListener("click", (event) => {
-  playRound(getComputerChoice(), event.target.textContent);
+  playRound(event.target.textContent, getComputerChoice());
 });
 scissorsButton.addEventListener("click", (event) => {
-  playRound(getComputerChoice(), event.target.textContent);
+  playRound(event.target.textContent, getComputerChoice());
 });
 
 let playerScore = 0;
@@ -55,14 +47,16 @@ function playRound(playerSelection, computerSelection) {
     computerScoreDisplay.textContent = computerScore;
   }
 
+  const beats = {
+    Rock: "Scissors",
+    Paper: "Rock",
+    Scissors: "Paper",
+  };
+
   if (playerSelection === computerSelection) {
     messageDisplay.textContent = "Draw!";
-  } else if (playerSelection === "Rock") {
-    isPlayerWinner(computerSelection === "Scissors");
-  } else if (playerSelection === "Paper") {
-    isPlayerWinner(computerSelection === "Rock");
-  } else if (playerSelection === "Scissors") {
-    isPlayerWinner(computerSelection === "Paper");
+  } else {
+    isPlayerWinner(beats[playerSelection] === computerSelection);
   }
 
   if (playerScore === 5) {
