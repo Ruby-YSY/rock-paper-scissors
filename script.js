@@ -58,19 +58,3 @@ function playRound(computerChoice, humanChoice) {
     }
   }
 }
-
-function playGame() {
-    playRound(getComputerChoice(), getHumanChoice());
-    console.log("Score:");
-    console.log(`Human: ${humanScore}`);
-    console.log(`Computer: ${computerScore}`);
-    console.log("-------------------------------------------");
-
-  if (humanScore === 5) {
-    console.log("You're a winner!");
-  } else {
-    console.log("You've lost!");
-  }
-}
-
-playGame();
