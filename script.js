@@ -15,43 +15,45 @@ function getHumanChoice() {
   return prompt("Choose Rock, Paper or Scissors:");
 }
 
-const rockButton = document.querySelector('#rock-button');
-const paperButton = document.querySelector('#paper-button');
-const scissorsButton = document.querySelector('#scissors-button');
+const rockButton = document.querySelector("#rock-button");
+const paperButton = document.querySelector("#paper-button");
+const scissorsButton = document.querySelector("#scissors-button");
 
-rockButton.addEventListener('click', (event) => {
-  playRound(getComputerChoice(), event.target.innerHTML);
+const playerSelectionDisplay = document.querySelector("#player-selection");
+const computerSelectionDisplay = document.querySelector("#computer-selection");
+const playerScoreDisplay = document.querySelector("#player-score");
+const computerScoreDisplay = document.querySelector("#computer-score");
+const messageDisplay = document.querySelector("#message");
+
+rockButton.addEventListener("click", (event) => {
+  playRound(getComputerChoice(), event.target.textContent);
 });
-paperButton.addEventListener('click', (event) => {
-  playRound(getComputerChoice(), event.target.innerHTML);
+paperButton.addEventListener("click", (event) => {
+  playRound(getComputerChoice(), event.target.textContent);
 });
-scissorsButton.addEventListener('click', (event) => {
-  playRound(getComputerChoice(), event.target.innerHTML);
+scissorsButton.addEventListener("click", (event) => {
+  playRound(getComputerChoice(), event.target.textContent);
 });
 
 let humanScore = 0;
 let computerScore = 0;
 
-function playRound(computerChoice, humanChoice) {
-  const computerSelection = computerChoice;
-  const humanSelection =
-    humanChoice.at(0).toUpperCase() + humanChoice.substr(1).toLowerCase();
+function playRound(computerSelection, humanSelection) {
+  playerSelectionDisplay.textContent = `Player: ${humanSelection}`;
+  computerSelectionDisplay.textContent = `CPU: ${computerSelection}`;
 
   function result(isHumanWinner) {
     if (isHumanWinner) {
-      console.log(`You've won! ${humanSelection} beats ${computerSelection}.`);
-      humanScore++;
+      messageDisplay.textContent = `You've won! ${humanSelection} beats ${computerSelection}.`;
+      playerScoreDisplay.textContent = ++humanScore;
     } else {
-      console.log(`You've lost! ${computerSelection} beats ${humanSelection}.`);
-      computerScore++;
+      messageDisplay.textContent = `You've lost! ${computerSelection} beats ${humanSelection}.`;
+      computerScoreDisplay.textContent = ++computerScore;
     }
   }
 
-  console.log(humanSelection);
-  console.log(computerSelection);
-
   if (humanSelection === computerSelection) {
-    console.log("Draw!");
+    messageDisplay.textContent = "Draw!";
   } else if (humanSelection === "Rock") {
     if (computerSelection === "Scissors") {
       result(true);
