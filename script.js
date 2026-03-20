@@ -1,14 +1,42 @@
-const options = ["Rock", "Paper", "Scissors"];
-
-const beats = {
-  Rock: "Scissors",
-  Paper: "Rock",
-  Scissors: "Paper",
-};
-
 function getComputerChoice() {
+  const options = ["Rock", "Paper", "Scissors"];
   return options[Math.floor(Math.random() * 3)];
 }
+
+const game = {
+  playerScore: 0,
+  computerScore: 0,
+
+  beats: {
+    Rock: "Scissors",
+    Paper: "Rock",
+    Scissors: "Paper",
+  },
+
+  getRoundResult(playerChoice, computerChoice) {
+    if (playerChoice === computerChoice) return "draw";
+    return this.beats[playerChoice] === computerChoice ? "win" : "lose";
+  },
+
+  updateScore(outcome) {
+    if (outcome === "win") {
+      this.playerScore++;
+    } else if (outcome === "lose") {
+      this.computerScore++;
+    }
+  },
+
+  resetScore() {
+    this.playerScore = 0;
+    this.computerScore = 0;
+  },
+
+  playRound(playerSelection, computerSelection) {
+    const outcome = this.getRoundResult(playerSelection, computerSelection);
+    this.updateScore(outcome);
+    return outcome;
+  },
+};
 
 const playerSelectionDisplay = document.querySelector("#player-selection");
 const computerSelectionDisplay = document.querySelector("#computer-selection");
@@ -20,23 +48,14 @@ const rpsButtons = document.querySelectorAll(
   "#rock-button, #paper-button, #scissors-button",
 );
 
-rpsButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    playRound(event.target.textContent, getComputerChoice());
-  });
-});
-
-function getRoundResult(playerChoice, computerChoice) {
-  if (playerChoice === computerChoice) return "draw";
-
-  return beats[playerChoice] === computerChoice ? "win" : "lose";
-}
-
-function playRound(playerSelection, computerSelection) {
-  const outcome = getRoundResult(playerSelection, computerSelection);
-
-  updateUI(playerSelection, computerSelection, outcome);
-  updateScore(outcome);
+function getMessage(playerChoice, computerChoice, outcome) {
+  if (outcome === "win") {
+    return `You've won! ${playerChoice} beats ${computerChoice}.`;
+  } else if (outcome === "lose") {
+    return `You've lost! ${computerChoice} beats ${playerChoice}.`;
+  } else {
+    return "Draw!";
+  }
 }
 
 function updateUI(playerChoice, computerChoice, outcome) {
@@ -48,46 +67,32 @@ function updateUI(playerChoice, computerChoice, outcome) {
     computerChoice,
     outcome,
   );
-}
 
-function getMessage(playerChoice, computerChoice, outcome) {
-  if (outcome === "win") {
-    return `You've won! ${playerChoice} beats ${computerChoice}.`;
-  } else if (outcome === "lose") {
-    return `You've lost! ${computerChoice} beats ${playerChoice}.`;
-  } else {
-    return "Draw!";
-  }
-}
-
-let playerScore = 0;
-let computerScore = 0;
-
-function updateScore(result) {
-  if (result === "win") {
-    playerScore++;
-    playerScoreDisplay.textContent = playerScore;
-  } else if (result === "lose") {
-    computerScore++;
-    computerScoreDisplay.textContent = computerScore;
-  }
-
-  checkGameEnd();
+  playerScoreDisplay.textContent = game.playerScore;
+  computerScoreDisplay.textContent = game.computerScore;
 }
 
 function checkGameEnd() {
-  if (playerScore === 5) {
+  if (game.playerScore === 5) {
     messageDisplay.textContent = "You're a winner!";
-    resetScore();
-  } else if (computerScore === 5) {
+    game.resetScore();
+  } else if (game.computerScore === 5) {
     messageDisplay.textContent = "You're a loser!";
-    resetScore();
+    game.resetScore();
   }
+
+  playerScoreDisplay.textContent = game.playerScore;
+  computerScoreDisplay.textContent = game.computerScore;
 }
 
-function resetScore() {
-  playerScore = 0;
-  computerScore = 0;
-  playerScoreDisplay.textContent = playerScore;
-  computerScoreDisplay.textContent = computerScore;
-}
+rpsButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    const playerChoice = event.target.textContent;
+    const computerChoice = getComputerChoice();
+
+    const outcome = game.playRound(playerChoice, computerChoice);
+
+    updateUI(playerChoice, computerChoice, outcome);
+    checkGameEnd();
+  });
+});
